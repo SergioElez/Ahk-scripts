@@ -1,4 +1,24 @@
-﻿#IfWinActive ahk_exe Unity.exe
+
+#IfWinActive ahk_class CabinetWClass ; File Explorer
+	^Backspace::
+
+#IfWinActive ahk_class Progman ; Desktop
+    ^Backspace::
+
+#IfWinActive ahk_class Notepad
+	^Backspace::
+	Send ^+{Left}{Backspace}
+	
+#IfWinActive ahk_exe Unity.exe
+	XButton1::
+	Send, {Backspace}
+	Return
+
+	XButton2::
+	Send, !+a
+	Return
+
+#IfWinActive ahk_exe NanaZip.exe
 	XButton1::
 	Send, {Backspace}
 	Return
@@ -7,7 +27,7 @@
 	XButton1::
 	Send, {Backspace}
 	Return
-
+	
 #IfWinActive ahk_exe Brave.exe
 	\::
 	Send, {Enter}
@@ -16,6 +36,11 @@
 #IfWinActive ahk_exe Brave.exe
 	!F4::
 	Send, {Ctrl}
+	return
+
+#IfWinActive ahk_exe Brave.exe
+	^XButton1::
+	Send, {F11}
 	return
 
 #IfWinActive ahk_exe Aseprite.exe
@@ -37,10 +62,63 @@
 	^+v::
 	Send, {Ctrl}
 	Return
+
+#IfWinActive, ahk_class GLFW30
+	MButton::M
+	Return
+#IfWinActive, ahk_class GLFW30
+	XButton2::e
+	Return
+#IfWinActive, ahk_class GLFW30
+	XButton1::Tab
+	Return
+
+#IfWinActive ahk_exe Baldur.exe
+	XButton2::Send 0
+	CapsLock::m
+	Tab::i
+	Shift::Tab
+	XButton1::Send {F7}
+
+
+#IfWinActive ahk_exe SoTGame.exe
+	XButton2::
+	Send, {x}
+	Send, {XButton2}
+	Return
+
+#IfWinActive ahk_exe SoTGame.exe
+	MButton::
+	Send {1}
+	Send {RButton down}
+	Sleep,100
+	Send {LButton down}
+	Sleep,500
+	Send {LButton up}
+	Send {RButton up}
+	Sleep,1550
+	Send {Space}
+	Return
+
+#IfWinActive ahk_exe neovide.exe
+	CapsLock:: 
+		Send, {F12}
+	Return
+
 #IfWinActive
 
-^XButton1::
-Send, {F11}
+~XButton2::
+{
+    if (A_TimeSincePriorHotkey < 400)  ; Si se pulsa dos veces en menos de 400ms
+    {
+        Send {Media_Play_Pause}  ; Envía el comando de pausa/reproducción de medios
+    }
+    return
+}
+
+!^+n::
+Run, "C:\Program Files\Neovide\neovide.exe"
+SetCapsLockState, 0
 return
 
 ^+1::
@@ -59,30 +137,20 @@ return
 Send, davidelez90@hotmail.com
 return
 
-^+9::
-ChangeResolution(32,1920,1080,144)
-return
-
-^+0::
-Send, spawn 5.300.78
-return
-
-ChangeResolution( cD, sW, sH, rR ) {
-	VarSetCapacity(dM,156,0), NumPut(156,2,&dM,36)
-	DllCall( "EnumDisplaySettingsA", UInt,0, UInt,-1, UInt,&dM ),
-	NumPut(0x5c0000,dM,40)
-	NumPut(cD,dM,104), NumPut(sW,dM,108), NumPut(sH,dM,112), NumPut(rR,dM,120)
-	Return DllCall( "ChangeDisplaySettingsA", UInt,&dM, UInt,0 )
-}
 
 !;::
 Send, {ñ}
+return
+
++!;::
+Send, {Ñ}
 return
 
 !a::
 Send, {á}
 return
 
+#IfWinNotActive  ahk_exe Lethal Company.exe
 !e::
 Send, {é}
 return
@@ -108,7 +176,7 @@ Send, {°}
 return
 
 !1::
-Send, {¿}
+Send, {¡}
 return
 
 +!a::
@@ -133,10 +201,6 @@ return
 
 ^+!e::
 Send, {€}
-return
-
-#v::
-Send, ^+{v}
 return
 
 *::?
